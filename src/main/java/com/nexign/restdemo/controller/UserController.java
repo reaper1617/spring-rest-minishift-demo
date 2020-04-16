@@ -38,20 +38,18 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<UserDTO> create(@RequestBody @NonNull UserToCreate user) {
-        AtomicReference<ResponseEntity<UserDTO>> ref = new AtomicReference<>();
+        AtomicReference<ResponseEntity<UserDTO>> ref = new AtomicReference<>(ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY).build());
         userService.create(User.builder()
                 .name(user.getName())
                 .build())
-                .ifPresentOrElse(
+                .ifPresent(
                         u -> {
                             ref.set(ResponseEntity.status(HttpStatus.CREATED)
                                     .body(UserDTO.builder()
                                             .id(u.getId())
                                             .name(u.getName())
                                             .build()));
-                        },
-                        () -> {
-                            ref.set(ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build());
                         }
                 );
         return ref.get();
@@ -59,12 +57,14 @@ public class UserController {
 
     @PutMapping("/user")
     public ResponseEntity<UserDTO> update(@RequestBody @NonNull UserToUpdate user) {
-        AtomicReference<ResponseEntity<UserDTO>> ref = new AtomicReference<>();
+        AtomicReference<ResponseEntity<UserDTO>> ref = new AtomicReference<>(ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .build());
         userService.update(User.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .build())
-                .ifPresentOrElse(
+                .ifPresent(
                         u -> {
                             ref.set(ResponseEntity.ok(
                                     UserDTO.builder()
@@ -72,9 +72,6 @@ public class UserController {
                                             .name(u.getName())
                                             .build())
                             );
-                        },
-                        () -> {
-                            ref.set(ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build());
                         }
                 );
         return ref.get();

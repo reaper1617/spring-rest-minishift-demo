@@ -40,13 +40,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> update(@NonNull User user) {
         final AtomicReference<User> userRef = new AtomicReference<>();
-        userRepository.findById(user.getId()).ifPresentOrElse(
+        userRepository.findById(user.getId()).ifPresent(
                 u -> {
                     u.setName(user.getName());
                     userRef.set(userRepository.save(u));
-                },
-                () -> {
-                    log.debug("User with id = {} not found", user.getId());
                 }
         );
         return Optional.of(userRef.get());
