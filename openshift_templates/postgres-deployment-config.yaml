@@ -25,12 +25,14 @@ spec:
           image: postgres
           imagePullPolicy: IfNotPresent
           env:
-            - name: POSTGRESQL_USER
+#            - name: POSTGRESQL_USER
+#              value: postgres
+            - name: POSTGRESQL_ADMIN_PASSWORD
               value: postgres
-            - name: POSTGRESQL_PASSWORD
-              value: postgres
-            - name: POSTGRESQL_DATABASE
-              value: postgres
+#            - name: POSTGRESQL_PASSWORD
+#              value: postgres
+#            - name: POSTGRESQL_DATABASE
+#              value: postgres
           ports:
             - containerPort: 5432
               protocol: TCP

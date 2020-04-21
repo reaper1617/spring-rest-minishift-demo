@@ -1,0 +1,16 @@
+#####################
+### Database Route ###
+#####################
+kind: Route
+apiVersion: v1
+metadata:
+  name: backend-db-route
+  labels:
+    application: backend
+  annotations:
+    description: Route for postgres database
+spec:
+  host: db.cloudapps.example.com
+  to:
+    kind: Service
+    name: db

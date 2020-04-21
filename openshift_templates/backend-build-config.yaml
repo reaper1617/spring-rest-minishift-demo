@@ -20,7 +20,7 @@ spec:
       from:
         kind: ImageStreamTag
         namespace: openshift
-        name: openjdk18-openshift:latest
+        name: redhat-openjdk18-openshift:1.4
   output:
     to:
       kind: ImageStreamTag

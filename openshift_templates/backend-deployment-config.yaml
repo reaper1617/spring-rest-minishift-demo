@@ -29,15 +29,15 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: minishift
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgresql:5432/
+              value: jdbc:postgresql://db:5432/
             - name: SPRING_DATASOURCE_USERNAME
               value: postgres
             - name: SPRING_DATASOURCE_PASSWORD
               value: postgres
             - name: SPRING_FLYWAY_URL
-              value: jdbc:postgresql://postgresql:5432/
+              value: jdbc:postgresql://db:5432/
             - name: SPRING_FLYWAY_USER
-              value: postgrews
+              value: postgres
             - name: SPRING_FLYWAY_PASSWORD
               value: postgres
             - name: SPRING_SECURITY_USER_NAME
@@ -52,8 +52,8 @@ spec:
             httpGet:
               path: /ready
               port: 8080
-            initialDelaySeconds: 15
-            timeoutSeconds: 1
+            initialDelaySeconds: 120
+            timeoutSeconds: 10
           resources: {}
           terminationMessagePath: /dev/termination-log
           securityContext:

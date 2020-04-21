@@ -13,6 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .authorizeRequests()
                 .mvcMatchers("/login").permitAll()
+                .mvcMatchers("/ready").permitAll()
                 .mvcMatchers("/**").authenticated();
         http.formLogin().and().httpBasic();
     }
