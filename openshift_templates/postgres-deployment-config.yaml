@@ -1,0 +1,60 @@
+###########################################
+### Postgres Database Deployment Config ###
+###########################################
+kind: DeploymentConfig
+apiVersion: v1
+metadata:
+  name: backend-db
+  labels:
+    application: backend
+spec:
+  replicas: 1
+  selector:
+    deploymentConfig: backend-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        deploymentConfig: backend-db
+        application: backend
+      name: backend-db
+    spec:
+      containers:
+        - name: backend-db
+          image: postgres
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRESQL_USER
+              value: postgres
+            - name: POSTGRESQL_PASSWORD
+              value: postgres
+            - name: POSTGRESQL_DATABASE
+              value: postgres
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: backend-db-data
+              mountPath: /var/lib/postgres/data
+          terminationMessagePath: /dev/termination-log
+          securityContext:
+            capabilities: {}
+            privileged: false
+      volumes:
+        - name: backend-db-data
+          emptyDir: {}
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - backend-db
+        from:
+          kind: ImageStreamTag
+          namespace: openshift
+          name: postgres:latest
+    - type: ConfigChange

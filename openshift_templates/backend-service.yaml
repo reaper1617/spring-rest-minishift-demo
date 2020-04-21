@@ -1,0 +1,17 @@
+#######################
+### Backend Service ###
+#######################
+kind: Service
+apiVersion: v1
+metadata:
+  name: backend-http
+  labels:
+    application: backend
+  annotations:
+    description: The web server's http port
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    deploymentConfig: backend

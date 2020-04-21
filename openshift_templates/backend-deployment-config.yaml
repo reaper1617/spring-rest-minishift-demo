@@ -1,0 +1,75 @@
+#################################
+### Backend Deployment Config ###
+#################################
+kind: DeploymentConfig
+apiVersion: v1
+metadata:
+  name: backend
+  labels:
+    deploymentConfig: backend
+    application: backend
+spec:
+  replicas: 1
+  selector:
+    deploymentConfig: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        deploymentConfig: backend
+        application: backend
+      name: backend
+    spec:
+      containers:
+        - name: backend
+          image: backend
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: minishift
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgresql:5432/
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: postgres
+            - name: SPRING_FLYWAY_URL
+              value: jdbc:postgresql://postgresql:5432/
+            - name: SPRING_FLYWAY_USER
+              value: postgrews
+            - name: SPRING_FLYWAY_PASSWORD
+              value: postgres
+            - name: SPRING_SECURITY_USER_NAME
+              value: dev
+            - name: SPRING_SECURITY_USER_PASSWORD
+              value: dev
+          ports:
+            - name: backend-http
+              containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          securityContext:
+            capabilities: {}
+            privileged: false
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - backend
+        from:
+          kind: ImageStreamTag
+          name: backend:latest
+    - type: ConfigChange
+
+

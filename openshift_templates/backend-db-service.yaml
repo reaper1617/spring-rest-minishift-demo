@@ -1,0 +1,15 @@
+#################################
+### Postgres Database Service ###
+#################################
+kind: Service
+apiVersion: v1
+metadata:
+  name: db
+  labels:
+    application: backend
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    deploymentConfig: backend-db

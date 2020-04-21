@@ -1,0 +1,16 @@
+#####################
+### Backend Route ###
+#####################
+kind: Route
+apiVersion: v1
+metadata:
+  name: backend-http-route
+  labels:
+    application: backend
+  annotations:
+    description: Route for application's http service
+spec:
+  host: backend.cloudapps.example.com
+  to:
+    kind: Service
+    name: backend-http

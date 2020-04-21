@@ -1,0 +1,15 @@
+#######################
+##### ImageStream #####
+#######################
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: backend
+  labels:
+    application: backend
+spec:
+  dockerImageRepository: ""
+  tags:
+    - name: latest
+
+
